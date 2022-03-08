@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { ScrollView, Text } from 'react-native';
+import { Text, View, Button } from 'react-native';
 
 class HomeScreen extends Component {
+  // Button/Text box to add a post
+
+  getAllpost() {} // Friends post and yours
   render() {
     return (
-      <ScrollView>
-        <Text>Home</Text>
-      </ScrollView>
+      <View>
+        <Text>home</Text>
+      </View>
     );
   }
 }

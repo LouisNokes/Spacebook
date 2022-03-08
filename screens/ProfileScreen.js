@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable react/no-unused-state */
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +39,12 @@ class ProfileScreen extends Component {
       navigation.navigate('login');
     }
   };
+
+  getProfilePicture() {} // Display in circle
+
+  getUserPost() {} // get and display users post
+
+  // Button/Text box to add a post
 
   getProfileData = async () => {
     const token = await AsyncStorage.getItem('@session_token');

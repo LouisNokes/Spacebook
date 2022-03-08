@@ -49,7 +49,12 @@ class SettingScreen extends Component {
   render() {
     return (
       <ScrollView>
-        <TouchableOpacity style={styles.otherBtns} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.otherBtns}
+          onPress={() => {
+            this.updateUser();
+          }}
+        >
           <Text style={{ color: 'white' }}>Change email/password</Text>
         </TouchableOpacity>
         <TouchableOpacity
