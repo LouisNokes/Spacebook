@@ -3,11 +3,14 @@
 import React, { Component } from 'react';
 import {
   Text,
+  View,
   StyleSheet,
-  TouchableOpacity,
-  ScrollView,
+  Pressable,
+  Modal,
+  TextInput,
   ToastAndroid,
 } from 'react-native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class SettingScreen extends Component {
@@ -18,8 +21,13 @@ class SettingScreen extends Component {
       token: '',
       password: '',
       email: '',
+      modalVisible: false,
     };
   }
+
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
 
   logout = async () => {
     const { navigation } = this.props;
@@ -47,42 +55,111 @@ class SettingScreen extends Component {
   };
 
   render() {
+    const { modalVisible } = this.state;
     return (
-      <ScrollView>
-        <TouchableOpacity
-          style={styles.otherBtns}
-          onPress={() => {
-            this.updateUser();
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          visible={modalVisible}
+          onRequestClose={() => {
+            this.setModalVisible(!modalVisible);
           }}
         >
-          <Text style={{ color: 'white' }}>Change email/password</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.logoutBtn}
-          onPress={() => {
-            this.logout();
-          }}
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TextInput style={styles.input} placeholder="Current email" />
+              <TextInput style={styles.input} placeholder="New email" />
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => this.updateUser()}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => this.setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+
+        <Pressable
+          style={[styles.button, styles.buttonOpen, styles.position]}
+          onPress={() => this.setModalVisible(true)}
         >
-          <Text style={{ color: 'red' }}>Log out</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <Text style={styles.textStyle}>Change email</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button, styles.buttonOpen, styles.position]}
+          onPress={() => this.setModalVisible(true)}
+        >
+          <Text style={styles.textStyle}>Change password</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.button, styles.buttonOpen, styles.position]}
+          onPress={() => this.logout()}
+        >
+          <Text style={styles.textStyle}>Sign Out</Text>
+        </Pressable>
+      </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  logoutBtn: {
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'grey',
-    padding: 10,
-    margin: 5,
-    borderWidth: 2,
+    marginTop: 22,
+    backgroundColor: '#3b5998',
   },
-  otherBtns: {
+  position: {
+    bottom: 200,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
     alignItems: 'center',
-    backgroundColor: 'grey',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
     padding: 10,
+    elevation: 2,
     margin: 5,
-    borderWidth: 2,
+    width: 170,
+  },
+  buttonOpen: {
+    backgroundColor: '#8b9dc3',
+  },
+  buttonClose: {
+    backgroundColor: '#8b9dc3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
 

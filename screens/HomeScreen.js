@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, ScrollView, Button, StyleSheet } from 'react-native';
 
 class HomeScreen extends Component {
   // Button/Text box to add a post
 
-  getAllpost() {} // Friends post and yours
   render() {
     return (
-      <View>
+      <ScrollView style={styles.backgrd}>
         <Text>home</Text>
-      </View>
+      </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  backgrd: {
+    backgroundColor: '#3b5998',
+  },
+});
 
 export default HomeScreen;

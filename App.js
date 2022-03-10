@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, View, Image } from 'react-native'; //Clean up this section
+import { Text, View, Image, StyleSheet } from 'react-native';
 
 import login from './screens/LoginScreen';
 import signup from './screens/SignupScreen';
@@ -11,6 +11,9 @@ import profileScreen from './screens/ProfileScreen';
 import settingscreen from './screens/SettingScreen';
 import messageScreen from './screens/MessageScreen';
 import FriendsList from './screens/FriendsList';
+import EditProfile from './screens/EditProfile';
+import addFriend from './screens/addFriend';
+import FriendRequest from './screens/friendRequestScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -26,17 +29,23 @@ function Home() {
         name="Home"
         component={homescreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+
+          headerTitle: () => (
+            <Image
+              style={{
+                width: 200,
+                height: 60,
+              }}
+              source={require('./assets/logo.png')}
+            />
+          ),
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
-                source={require('./assets/icon.png')}
+                source={require('./assets/home.png')}
                 resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? '#660094' : '#748c94',
-                }}
+                style={styles.image}
               />
               <Text
                 style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
@@ -55,13 +64,9 @@ function Home() {
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
-                source={require('./assets/icon.png')}
+                source={require('./assets/user.png')}
                 resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? '#660094' : '#748c94',
-                }}
+                style={styles.image}
               />
               <Text
                 style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
@@ -82,13 +87,9 @@ function Home() {
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
-                source={require('./assets/icon.png')}
+                source={require('./assets/message.png')}
                 resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? '#660094' : '#748c94',
-                }}
+                style={styles.image}
               />
               <Text
                 style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
@@ -108,13 +109,9 @@ function Home() {
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
-                source={require('./assets/icon.png')}
+                source={require('./assets/friends.png')}
                 resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? '#660094' : '#748c94',
-                }}
+                style={styles.image}
               />
               <Text
                 style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
@@ -129,18 +126,13 @@ function Home() {
         name="Settings"
         component={settingscreen}
         options={{
-          title: 'Settings',
-          headerTitleAlign: 'center',
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
-                source={require('./assets/icon.png')}
+                source={require('./assets/settings.png')}
                 resizeMode="contain"
-                style={{
-                  width: 25,
-                  height: 25,
-                  tintColor: focused ? '#660094' : '#748c94',
-                }}
+                style={styles.image}
               />
               <Text
                 style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
@@ -162,7 +154,7 @@ function MyStack() {
         <Stack.Screen
           name="login"
           component={login}
-          options={{ title: 'Login', headerTitleAlign: 'center' }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="signup"
@@ -174,9 +166,31 @@ function MyStack() {
           component={Home}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="edit"
+          component={EditProfile}
+          options={{ title: 'Edit', headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="add"
+          component={addFriend}
+          options={{ title: 'Add Friend', headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="request"
+          component={FriendRequest}
+          options={{ title: 'Friend Request', headerTitleAlign: 'center' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
 export default MyStack;
+
+const styles = StyleSheet.create({
+  image: {
+    width: 25,
+    height: 25,
+  },
+});

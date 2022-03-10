@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable react/no-unused-class-component-methods */
 /* eslint-disable react/no-unused-state */
@@ -6,11 +7,11 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  Button,
   ToastAndroid,
   Alert,
   Image,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 
 class ProfileScreen extends Component {
@@ -21,13 +22,15 @@ class ProfileScreen extends Component {
       firstName: '',
       lastName: '',
       friendCount: '',
+      photo: null,
+      isLoading: true,
       userId: '',
-      token: '',
     };
   }
 
   componentDidMount() {
     this.getProfileData();
+    this.get_profile_image();
   }
 
   checkLoggedIn = async () => {
@@ -40,7 +43,25 @@ class ProfileScreen extends Component {
     }
   };
 
-  getProfilePicture() {} // Display in circle
+  get_profile_image = () => {
+    fetch('http://localhost:3333/api/1.0.0/user/${userId}/photo', {
+      method: 'GET',
+      headers: {
+        'X-Authorization': 'a3b0601e54775e60b01664b1a5273d54',
+      },
+    })
+      .then((res) => res.blob())
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        this.setState({
+          photo: data,
+          isLoading: false,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+  };
 
   getUserPost() {} // get and display users post
 
@@ -76,10 +97,10 @@ class ProfileScreen extends Component {
       .then((responseJson) => {
         console.log(responseJson);
         this.setState({
-          user_id: responseJson.user_id,
-          first_name: responseJson.first_name,
-          last_name: responseJson.last_name,
-          friend_count: responseJson.friend_count,
+          userId: responseJson.user_id,
+          firstName: responseJson.first_name,
+          lastName: responseJson.last_name,
+          friendCount: responseJson.friend_count,
         });
       })
       .catch((error) => {
@@ -89,24 +110,27 @@ class ProfileScreen extends Component {
 
   render() {
     const { firstName, lastName, friendCount } = this.state;
+    const { navigation } = this.props;
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: 50,
-        }}
-      >
+      <View>
         <Image
           source={{ uri: 'https://reactjs.org/logo-og.png' }}
           style={styles.profileImg}
         />
 
-        <Text style={styles.txt}>
+        <Text style={styles.txtName}>
           {firstName} {lastName}
         </Text>
+
+        <TouchableOpacity
+          style={styles.editbtn}
+          onPress={() => {
+            navigation.navigate('edit'); // Nav to edit page
+          }}
+        >
+          <Text style={{ color: 'black' }}>Edit Profile</Text>
+        </TouchableOpacity>
         <Text style={styles.txt}>Friends: {friendCount}</Text>
-        <Button title="Edit Profile" />
       </View>
     );
   }
@@ -118,11 +142,26 @@ const styles = StyleSheet.create({
     borderRadius: 80,
     borderColor: 'black',
     borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 20,
   },
   txt: {
     fontWeight: 'bold',
     color: 'black',
     margin: 2,
+  },
+  txtName: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 20,
+  },
+  editbtn: {
+    alignItems: 'center',
+    backgroundColor: '#7649fe',
+    padding: 10,
+    margin: 5,
+    borderWidth: 2,
   },
 });
 

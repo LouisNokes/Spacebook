@@ -59,7 +59,8 @@ class Login extends Component {
     const { email, password } = this.state;
     const { navigation } = this.props;
     return (
-      <ScrollView>
+      <ScrollView style={styles.backgrd}>
+        <Text style={styles.title}> Spacebook </Text>
         <TextInput
           placeholder="Email"
           onChangeText={(email) => this.setState({ email })}
@@ -74,20 +75,20 @@ class Login extends Component {
           style={styles.input}
         />
         <TouchableOpacity
-          style={styles.loginBtn}
+          style={styles.loginPageBtn}
           onPress={() => {
             this.login();
           }}
         >
-          <Text style={{ color: 'black' }}>LOGIN</Text>
+          <Text style={{ color: 'white' }}>LOGIN</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.signupBtn}
+          style={styles.loginPageBtn}
           onPress={() => {
             navigation.navigate('signup');
           }}
         >
-          <Text style={{ color: 'black' }}>SIGN UP</Text>
+          <Text style={{ color: 'white' }}>SIGN UP</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -95,22 +96,30 @@ class Login extends Component {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 30,
+    marginTop: 50,
+    height: 150,
+  },
   input: {
     height: 40,
-    margin: 12,
+    margin: 5,
     borderWidth: 1,
     padding: 10,
+    backgroundColor: '#FFFFFF',
   },
-  loginBtn: {
+  loginPageBtn: {
     alignItems: 'center',
-    backgroundColor: '#7649fe',
+    justifyContent: 'center',
+    backgroundColor: '#8b9dc3',
     padding: 10,
     margin: 5,
-    borderWidth: 2,
+    borderRadius: 10,
   },
-  signupBtn: {
-    alignItems: 'center',
-    padding: 10,
+  backgrd: {
+    backgroundColor: '#3b5998',
   },
 });
 

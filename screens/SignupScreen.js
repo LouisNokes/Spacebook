@@ -22,18 +22,18 @@ class Signup extends Component {
   }
 
   signup = async () => {
-    const { firstName, lastName, email, password } = this.state;
+    const { first_name, last_name, email, password } = this.state;
     const { navigation } = this.props;
     const userData = {
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
       password,
     };
 
     if (
-      firstName === '' ||
-      lastName === '' ||
+      first_name === '' ||
+      last_name === '' ||
       email === '' ||
       password === ''
     ) {
@@ -68,19 +68,19 @@ class Signup extends Component {
   };
 
   render() {
-    const { firstName, lastName, email, password } = this.state;
+    const { first_name, last_name, email, password } = this.state;
     return (
-      <ScrollView>
+      <ScrollView style={styles.backgrd}>
         <TextInput
           placeholder="First Name"
-          onChangeText={(firstName) => this.setState({ firstName })}
-          value={firstName}
+          onChangeText={(first_name) => this.setState({ first_name })}
+          value={first_name}
           style={styles.input}
         />
         <TextInput
           placeholder="Last Name"
-          onChangeText={(lastName) => this.setState({ lastName })}
-          value={lastName}
+          onChangeText={(last_name) => this.setState({ last_name })}
+          value={last_name}
           style={styles.input}
         />
 
@@ -102,7 +102,7 @@ class Signup extends Component {
             this.signup();
           }}
         >
-          <Text style={{ color: 'black' }}>SIGN UP</Text>
+          <Text style={{ color: 'white' }}>SIGN UP</Text>
         </TouchableOpacity>
       </ScrollView>
     );
@@ -115,13 +115,17 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    backgroundColor: '#FFFFFF',
   },
   signupBtn: {
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#7649fe',
+    backgroundColor: '#8b9dc3',
     margin: 5,
     borderWidth: 2,
+  },
+  backgrd: {
+    backgroundColor: '#3b5998',
   },
 });
 
