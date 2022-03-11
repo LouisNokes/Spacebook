@@ -8,6 +8,8 @@ import {
   FlatList,
   View,
   Image,
+  Alert,
+  ToastAndroid,
 } from 'react-native-web';
 
 class AddFriend extends Component {
@@ -17,7 +19,6 @@ class AddFriend extends Component {
     this.state = {
       userInput: '',
       listData: [],
-      validationText: '',
     };
   }
 
@@ -35,10 +36,11 @@ class AddFriend extends Component {
   getData = async () => {
     const { userInput } = this.state;
     const { navigation } = this.props;
-    const value = await AsyncStorage.getItem('@session_token');
+    const token = await AsyncStorage.getItem('@session_token');
     return fetch(`http://localhost:3333/api/1.0.0/search?q=${userInput}`, {
+      method: 'GET',
       headers: {
-        'X-Authorization': value,
+        'X-Authorization': token,
       },
     })
       .then((response) => {
@@ -63,7 +65,27 @@ class AddFriend extends Component {
       });
   };
 
-  addRequest = async (user_id) => {};
+  addRequest = async (user_id) => {
+    const token = await AsyncStorage.getItem('@session_token');
+    const { navigation } = this.props;
+    fetch(`http://localhost:3333/api/1.0.0/user/${user_id}/friends`, {
+      method: 'post',
+      headers: {
+        'X-Authorization': token,
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      if (response.status === 401) {
+        navigation.navigate('login');
+      }
+      if (response.status === 404) {
+        Alert.alert('m');
+      }
+      return response.blob();
+    });
+  };
 
   checkLoggedIn = async () => {
     const { navigation } = this.props;
@@ -74,7 +96,7 @@ class AddFriend extends Component {
   };
 
   render() {
-    const { userInput, validationText, listData } = this.state;
+    const { userInput, listData } = this.state;
     return (
       <View>
         <ScrollView>
@@ -84,7 +106,6 @@ class AddFriend extends Component {
             value={userInput}
           />
           <Button title="Search:" onPress={() => this.getData()} />
-          <Text>{validationText}</Text>
           <FlatList
             data={listData}
             renderItem={({ item }) => (

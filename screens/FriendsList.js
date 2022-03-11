@@ -1,12 +1,57 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class FriendsList extends Component {
-  // Show friend request (Accept/Reject this)
+  constructor(props) {
+    super(props);
 
-  // Show current friends
+    this.state = {
+      userInput: '',
+      listData: [],
+    };
+  }
+
+  getData = async (userId) => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/friends`, {
+      method: 'GET',
+      headers: {
+        'X-Authorization': token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        if (response.status === 400) {
+          console.log('Bad Request');
+        } else if (response.status === 401) {
+          navigation.navigate('login');
+        } else {
+          throw 'Something went wrong';
+        }
+      })
+      .then((responseJson) => {
+        this.setState({
+          listData: responseJson,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
     const { navigation } = this.props;
+    const { userInput } = this.state;
     return (
       <ScrollView style={styles.view}>
         <TouchableOpacity
@@ -25,6 +70,11 @@ class FriendsList extends Component {
         >
           <Text style={{ color: 'white' }}>Friend Request</Text>
         </TouchableOpacity>
+        <TextInput
+          placeholder="Search friends list"
+          onChangeText={(userInput) => this.setState({ userInput })}
+          value={userInput}
+        />
       </ScrollView>
     );
   }

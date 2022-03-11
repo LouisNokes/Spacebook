@@ -70,7 +70,7 @@ class ProfileScreen extends Component {
   getProfileData = async () => {
     const token = await AsyncStorage.getItem('@session_token');
     const uID = await AsyncStorage.getItem('@user_id');
-
+    const { navigation } = this.props;
     return fetch(`http://localhost:3333/api/1.0.0/user/${uID}`, {
       method: 'get',
       headers: {
@@ -83,7 +83,7 @@ class ProfileScreen extends Component {
           return response.json();
         }
         if (response.status === 401) {
-          Alert.alert('nope');
+          navigation.navigate('login');
         }
         if (response.status === 404) {
           Alert.alert('m');
