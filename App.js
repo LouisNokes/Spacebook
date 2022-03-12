@@ -4,14 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View, Image, StyleSheet } from 'react-native';
 
-import login from './screens/LoginScreen';
-import signup from './screens/SignupScreen';
-import homescreen from './screens/HomeScreen';
-import profileScreen from './screens/ProfileScreen';
-import settingscreen from './screens/SettingScreen';
-import messageScreen from './screens/MessageScreen';
-import FriendsList from './screens/FriendsList';
-import EditProfile from './screens/EditProfile';
+import login from './screens/loginScreen';
+import signup from './screens/signupScreen';
+import homescreen from './screens/homeScreen';
+import profileScreen from './screens/profileScreen';
+import settingscreen from './screens/settingScreen';
+import FriendsList from './screens/friendsList';
+import EditProfile from './screens/editProfile';
 import addFriend from './screens/addFriend';
 import FriendRequest from './screens/friendRequestScreen';
 
@@ -78,28 +77,6 @@ function Home() {
         }}
       />
 
-      <Tab.Screen
-        name="Messages"
-        component={messageScreen}
-        options={{
-          title: 'Messages',
-          headerTitleAlign: 'center',
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <Image
-                source={require('./assets/message.png')}
-                resizeMode="contain"
-                style={styles.image}
-              />
-              <Text
-                style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
-              >
-                Messages
-              </Text>
-            </View>
-          ),
-        }}
-      />
       <Tab.Screen
         name="Friends"
         component={FriendsList}

@@ -9,7 +9,6 @@ import {
   View,
   Image,
   Alert,
-  ToastAndroid,
 } from 'react-native-web';
 
 class AddFriend extends Component {

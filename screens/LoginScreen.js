@@ -31,7 +31,7 @@ class Login extends Component {
     // Validation here
     const { email, password } = this.state;
     const { navigation } = this.props;
-    fetch('http://localhost:3333/api/1.0.0/login', {
+    fetch('http://192.168.0.45:3333/api/1.0.0/login', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 10,
+    borderWidth: 2,
   },
   backgrd: {
     backgroundColor: '#3b5998',

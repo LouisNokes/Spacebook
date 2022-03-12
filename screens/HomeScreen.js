@@ -7,10 +7,12 @@ import {
   Modal,
   TextInput,
   FlatList,
-  Button,
+  Image,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Button } from 'react-native-elements';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -21,6 +23,12 @@ class HomeScreen extends Component {
       userInput: '',
       listData: '',
     };
+  }
+
+  componentDidMount() {
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.getPost();
+    });
   }
 
   setModalVisible = (visible) => {
@@ -42,7 +50,7 @@ class HomeScreen extends Component {
       body: JSON.stringify(post),
     }).then((response) => {
       if (response.status === 200) {
-        return response.json();
+        navigation.navigate('home');
       }
       if (response.status === 400) {
         console.log('Bad Request');
@@ -86,6 +94,57 @@ class HomeScreen extends Component {
       });
   };
 
+  sendLike = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    const userId = await AsyncStorage.getItem('@user_id');
+    const postId = await AsyncStorage.getItem('@postId');
+    fetch(
+      `http://localhost:3333/api/1.0.0/user/${userId}/post/${postId}/like`,
+      {
+        method: 'POST',
+        headers: {
+          'X-Authorization': token,
+        },
+      }
+    ).then((response) => {
+      if (response.status === 200) {
+        navigation.navigate('home');
+      }
+      if (response.status === 400) {
+        console.log('Bad Request');
+      } else if (response.status === 401) {
+        navigation.navigate('login');
+      } else {
+        throw 'Something went wrong';
+      }
+    });
+  };
+
+  deletePost = async () => {
+    const token = await AsyncStorage.getItem('@session_token');
+    const userId = await AsyncStorage.getItem('@user_id');
+
+    const { navigation } = this.props;
+    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/post/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-Authorization': token,
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      if (response.status === 400) {
+        console.log('Bad Request');
+      } else if (response.status === 401) {
+        navigation.navigate('login');
+      } else {
+        throw 'Something went wrong';
+      }
+    });
+  };
+
   render() {
     const { modalVisible, userInput, listData } = this.state;
     return (
@@ -121,22 +180,53 @@ class HomeScreen extends Component {
             </View>
           </View>
         </Modal>
-
-        <Pressable
-          style={[styles.button, styles.buttonOpen, styles.position]}
+        <Button
+          style={[styles.button, styles.buttonOpen]}
           onPress={() => this.setModalVisible(true)}
         >
           <Text style={styles.textStyle}>Create post</Text>
-        </Pressable>
-        <Button title="Search:" onPress={() => this.getPost()} />
+        </Button>
         <FlatList
           data={listData}
           renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row' }}>
-              <Text>
-                {item.text}
-                <Button title="Delete" onPress={() => this.addRequest()} />
+            <View style={styles.postContainer}>
+              <Image
+                style={styles.profileImg}
+                source={require('../assets/nopic.png')}
+              />
+              <Text style={styles.nameTxt}>
+                {item.author.first_name} {item.author.last_name}
               </Text>
+              <Text style={styles.contentSection}> {item.text} </Text>
+              <View style={styles.buttonContainer}>
+                <Button
+                  icon={
+                    <Icon
+                      name="thumbs-o-up"
+                      size={15}
+                      color="white"
+                      onPress={async () => {
+                        this.sendLike();
+                      }}
+                    />
+                  }
+                />
+                <Text> {item.numLikes} </Text>
+                <Button
+                  icon={<Icon name="thumbs-o-down" size={15} color="white" />}
+                />
+                <Button icon={<Icon name="edit" size={15} color="white" />} />
+                <Button
+                  icon={<Icon name="trash" size={15} color="white" />}
+                  onPress={() => {
+                    this.deletePost();
+                  }}
+                />
+                <Button
+                  icon={<Icon name="eye" size={15} color="white" />}
+                  onPress={() => {}}
+                />
+              </View>
             </View>
           )}
         />
@@ -150,11 +240,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
     backgroundColor: '#3b5998',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  postContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    height: 300,
+    width: 400,
+    marginTop: 30,
+    borderWidth: 2,
+  },
+  profileImg: {
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    height: 30,
+    width: 30,
   },
   position: {
     bottom: 200,
+  },
+  nameTxt: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
   modalView: {
     margin: 20,
@@ -198,6 +311,10 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  contentSection: {
+    marginTop: 10,
+    marginBottom: 15,
   },
 });
 

@@ -13,6 +13,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { ScrollView } from 'react-native-web';
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -112,7 +113,7 @@ class ProfileScreen extends Component {
     const { firstName, lastName, friendCount } = this.state;
     const { navigation } = this.props;
     return (
-      <View>
+      <ScrollView style={styles.backgrd}>
         <Image
           source={{ uri: 'https://reactjs.org/logo-og.png' }}
           style={styles.profileImg}
@@ -128,10 +129,10 @@ class ProfileScreen extends Component {
             navigation.navigate('edit'); // Nav to edit page
           }}
         >
-          <Text style={{ color: 'black' }}>Edit Profile</Text>
+          <Text style={{ color: 'white' }}>Edit Profile</Text>
         </TouchableOpacity>
         <Text style={styles.txt}>Friends: {friendCount}</Text>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -158,10 +159,14 @@ const styles = StyleSheet.create({
   },
   editbtn: {
     alignItems: 'center',
-    backgroundColor: '#7649fe',
+    backgroundColor: '#8b9dc3',
+    borderRadius: 10,
     padding: 10,
     margin: 5,
     borderWidth: 2,
+  },
+  backgrd: {
+    backgroundColor: '#3b5998',
   },
 });
 

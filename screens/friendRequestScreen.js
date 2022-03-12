@@ -18,6 +18,12 @@ class FriendRequest extends Component {
     };
   }
 
+  componentDidMount() {
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+      this.getRequest();
+    });
+  }
+
   // Button/Text box to add a post
   getRequest = async () => {
     const { navigation } = this.props;
@@ -97,29 +103,26 @@ class FriendRequest extends Component {
   render() {
     const { listData } = this.state;
     return (
-      <View>
-        <ScrollView>
-          <Button title="Show Request" onPress={() => this.getRequest()} />
-          <FlatList
-            data={listData}
-            renderItem={({ item }) => (
-              <View style={{ flexDirection: 'row' }}>
-                <Text>
-                  {item.first_name} {item.last_name}
-                  <Button
-                    title="Accept"
-                    onPress={() => this.acceptRequest(item.user_id)}
-                  />
-                  <Button
-                    title="Decline"
-                    onPress={() => this.declineRequest(item.user_id)}
-                  />
-                </Text>
-              </View>
-            )}
-          />
-        </ScrollView>
-      </View>
+      <ScrollView>
+        <FlatList
+          data={listData}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row' }}>
+              <Text>
+                {item.first_name} {item.last_name}
+                <Button
+                  title="Accept"
+                  onPress={() => this.acceptRequest(item.user_id)}
+                />
+                <Button
+                  title="Decline"
+                  onPress={() => this.declineRequest(item.user_id)}
+                />
+              </Text>
+            </View>
+          )}
+        />
+      </ScrollView>
     );
   }
 }
@@ -127,6 +130,18 @@ class FriendRequest extends Component {
 const styles = StyleSheet.create({
   backgrd: {
     backgroundColor: '#3b5998',
+  },
+  container: {
+    flex: 1,
+  },
+  image: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  name: {
+    fontSize: 16,
+    marginTop: 5,
   },
 });
 
