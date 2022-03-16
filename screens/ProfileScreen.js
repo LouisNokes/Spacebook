@@ -218,7 +218,7 @@ class ProfileScreen extends Component {
           <TouchableOpacity
             style={styles.editbtn}
             onPress={() => {
-              navigation.navigate('editProfile'); // Nav to edit page
+              navigation.navigate('edit'); // Nav to edit page
             }}
           >
             <Text style={{ color: 'white' }}>Upload Picture</Text>
@@ -255,6 +255,7 @@ class ProfileScreen extends Component {
                   {item.author.first_name} {item.author.last_name}
                 </Text>
                 <Text style={styles.contentSection}> {item.text} </Text>
+                <Text> Likes: {item.numLikes} </Text>
                 <View style={styles.rightButtons}>
                   <Button
                     icon={<Icon name="edit" size={15} color="white" />}
@@ -291,19 +292,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b5998',
   },
   profileImg: {
-    width: 100,
+    alignSelf: 'center',
     height: 100,
-    borderRadius: 80,
-    borderColor: 'black',
+    width: 100,
     borderWidth: 1,
-    margin: 20,
+    borderRadius: 75,
+    marginTop: 20,
   },
   txt: {
+    alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
     margin: 2,
   },
   txtName: {
+    alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
     fontSize: 20,
@@ -342,6 +345,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 30,
     width: 30,
+    borderRadius: 75,
+    marginTop: 4,
   },
   position: {
     bottom: 200,

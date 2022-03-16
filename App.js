@@ -52,8 +52,7 @@ function Home() {
         name="Friends"
         component={FriendsList}
         options={{
-          title: 'Friends',
-          headerTitleAlign: 'center',
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <View>
               <Image
@@ -74,7 +73,8 @@ function Home() {
         name="Settings"
         component={settingscreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
             <View>
               <Image

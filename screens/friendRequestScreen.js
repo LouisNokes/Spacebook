@@ -107,15 +107,11 @@ class FriendRequest extends Component {
   render() {
     const { listData } = this.state;
     return (
-      <ScrollView>
+      <ScrollView style={styles.backgrd}>
         <FlatList
           data={listData}
           renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                style={styles.profileImg}
-                source={require('../assets/nopic.png')}
-              />
+            <View>
               <Text>
                 {item.first_name} {item.last_name}
                 <Button
@@ -137,6 +133,7 @@ class FriendRequest extends Component {
 
 const styles = StyleSheet.create({
   backgrd: {
+    flexDirection: 'row',
     backgroundColor: '#3b5998',
   },
   container: {

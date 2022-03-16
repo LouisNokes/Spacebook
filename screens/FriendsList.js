@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button } from 'react-native-web';
 
 class FriendsList extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class FriendsList extends Component {
       userInput: '',
       limit: 5,
       offset: 0,
+      photo: null,
     };
   }
 
@@ -127,7 +129,7 @@ class FriendsList extends Component {
             navigation.navigate('add');
           }}
         >
-          <Text style={{ color: 'white' }}>Add Friends</Text>
+          <Text style={{ color: 'white' }}>Find Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.addButton}
@@ -138,33 +140,34 @@ class FriendsList extends Component {
           <Text style={{ color: 'white' }}>Friend Request</Text>
         </TouchableOpacity>
         <TextInput
-          placeholder="Search for friends"
+          placeholder="Search for friends..."
           onChangeText={(userInput) => this.setState({ userInput })}
           value={userInput}
           style={styles.input}
         />
         <TouchableOpacity
+          style={styles.searchButton}
           onPress={() => {
             this.searchFriends();
           }}
         >
           <Text style={{ color: 'white' }}>Search</Text>
         </TouchableOpacity>
-        <Text> My Friends </Text>
+        <Text style={styles.title}> My friends </Text>
         <FlatList
           data={listData}
           renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.postContainer}>
               <Text>
                 {item.user_givenname} {item.user_familyname}
               </Text>
-              <TouchableOpacity
+              <Button
+                style={styles.addButton}
+                title="View"
                 onPress={() => {
                   this.viewFriend(item.user_id);
                 }}
-              >
-                <Text style={{ color: 'white' }}>View</Text>
-              </TouchableOpacity>
+              />
             </View>
           )}
         />
@@ -184,6 +187,39 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     borderRadius: 10,
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 5,
+  },
+  searchButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8b9dc3',
+    height: 20,
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+    color: 'white',
+  },
+  input: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  postContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 30,
+    borderWidth: 2,
   },
 });
 

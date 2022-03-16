@@ -120,6 +120,7 @@ class EditPost extends Component {
             style={styles.input}
           />
           <TouchableOpacity
+            style={styles.editbtn}
             onPress={() => {
               this.updateText();
             }}
@@ -148,6 +149,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#3b5998',
+  },
+  input: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
   },
   txt: {
     fontWeight: 'bold',

@@ -206,14 +206,13 @@ class FriendScreen extends Component {
             data={listData}
             renderItem={({ item }) => (
               <View style={styles.postContainer}>
-                <Image
-                  style={styles.profileImgCont}
-                  source={require('../assets/nopic.png')}
-                />
+                <Image style={styles.profileImgCont} source={photo} />
                 <Text style={styles.nameTxt}>
                   {item.author.first_name} {item.author.last_name}
                 </Text>
+
                 <Text style={styles.contentSection}> {item.text} </Text>
+                <Text> Likes: {item.numLikes} </Text>
                 <View style={styles.rightButtons}>
                   <Button
                     icon={
@@ -227,7 +226,7 @@ class FriendScreen extends Component {
                       />
                     }
                   />
-                  <Text> Likes: {item.numLikes} </Text>
+
                   <Button
                     icon={
                       <Icon
@@ -263,21 +262,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b5998',
   },
   profileImg: {
-    width: 100,
+    alignSelf: 'center',
     height: 100,
-    borderRadius: 80,
-    borderColor: 'black',
+    width: 100,
     borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 20,
+    borderRadius: 75,
+    marginTop: 20,
   },
   txt: {
+    alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
     margin: 2,
   },
   txtName: {
+    alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
     fontSize: 20,
@@ -293,8 +292,9 @@ const styles = StyleSheet.create({
   backgrd: {
     backgroundColor: '#3b5998',
   },
-  buttonContainer: {
+  rightButtons: {
     flexDirection: 'row',
+    marginLeft: 300,
   },
   postContainer: {
     flex: 1,
@@ -307,15 +307,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderWidth: 2,
   },
-  rightButtons: {
-    flexDirection: 'row',
-    marginLeft: 300,
-  },
   profileImgCont: {
     resizeMode: 'contain',
     alignSelf: 'center',
     height: 30,
     width: 30,
+    borderRadius: 75,
+    marginTop: 4,
   },
   position: {
     bottom: 200,

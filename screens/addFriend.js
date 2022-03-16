@@ -7,7 +7,7 @@ import {
   TextInput,
   FlatList,
   View,
-  Image,
+  StyleSheet,
 } from 'react-native-web';
 
 class AddFriend extends Component {
@@ -99,34 +99,44 @@ class AddFriend extends Component {
   render() {
     const { userInput, listData } = this.state;
     return (
-      <View>
-        <ScrollView>
-          <TextInput
-            placeholder="Search..."
-            onChangeText={(userInput) => this.setState({ userInput })}
-            value={userInput}
-          />
-          <Button title="Search:" onPress={() => this.getData()} />
+      <ScrollView style={styles.backgrd}>
+        <TextInput
+          placeholder="Search..."
+          onChangeText={(userInput) => this.setState({ userInput })}
+          value={userInput}
+          style={styles.input}
+        />
+        <Button title="Search:" onPress={() => this.getData()} />
 
-          <FlatList
-            data={listData}
-            renderItem={({ item }) => (
-              <View style={{ flexDirection: 'row' }}>
-                <Image source={require('../assets/friends.png')} />
-                <Text>
-                  {item.user_givenname} {item.user_familyname}
-                  <Button
-                    title="Add"
-                    onPress={() => this.addRequest(item.user_id)}
-                  />
-                </Text>
-              </View>
-            )}
-          />
-        </ScrollView>
-      </View>
+        <FlatList
+          data={listData}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row' }}>
+              <Text>
+                {item.user_givenname} {item.user_familyname}
+                <Button
+                  title="Add"
+                  onPress={() => this.addRequest(item.user_id)}
+                />
+              </Text>
+            </View>
+          )}
+        />
+      </ScrollView>
     );
   }
 }
+const styles = StyleSheet.create({
+  backgrd: {
+    backgroundColor: '#3b5998',
+  },
+  input: {
+    height: 40,
+    margin: 5,
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+});
 
 export default AddFriend;
