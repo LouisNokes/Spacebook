@@ -73,7 +73,7 @@ class SettingScreen extends Component {
       } else if (response.status === 401) {
         throw new Error('Unauthorised');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };

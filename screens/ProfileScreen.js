@@ -108,7 +108,7 @@ class ProfileScreen extends Component {
       } else if (response.status === 404) {
         throw new Error('Not found');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };
@@ -162,7 +162,7 @@ class ProfileScreen extends Component {
       } else if (response.status === 403) {
         throw new Error('You can only delete your own post');
       }
-      throw new Error('Something went wrong');
+      throw 'Something went wrong';
     });
   };
 
@@ -171,7 +171,7 @@ class ProfileScreen extends Component {
     const userId = await AsyncStorage.getItem('@user_id');
     const { navigation } = this.props;
     return fetch(`http://localhost:3333/api/1.0.0/user/${userId}`, {
-      method: 'get',
+      method: 'GET',
       headers: {
         'X-Authorization': token,
         'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ class ProfileScreen extends Component {
         } else if (response.status === 404) {
           throw new Error('Not found');
         } else {
-          throw new Error('Something went wrong');
+          throw 'Something went wrong';
         }
       })
       .then((responseJson) => {

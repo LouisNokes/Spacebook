@@ -103,7 +103,7 @@ class FriendsList extends Component {
         } else if (response.status === 401) {
           navigation.navigate('login');
         } else {
-          throw new Error('Something went wrong');
+          throw 'Something went wrong';
         }
       })
       .then((responseJson) => {

@@ -47,7 +47,7 @@ class FriendRequest extends Component {
         if (response.status === 401) {
           navigation.navigate('login');
         } else {
-          throw new Error('Something went wrong');
+          throw 'Something went wrong';
         }
       })
       .then((responseJson) => {
@@ -77,7 +77,7 @@ class FriendRequest extends Component {
       } else if (response.status === 404) {
         throw new Error('Not found');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };
@@ -99,7 +99,7 @@ class FriendRequest extends Component {
       } else if (response.status === 404) {
         throw new Error('Not found');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };

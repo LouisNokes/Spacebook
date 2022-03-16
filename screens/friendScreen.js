@@ -34,10 +34,6 @@ class FriendScreen extends Component {
     });
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
   viewPost = (friendPostId) => {
     const { navigation } = this.props;
     navigation.navigate('viewPost', {
@@ -94,7 +90,7 @@ class FriendScreen extends Component {
         } else if (response.status === 403) {
           throw new Error('Can only view the post of yourself of your friends');
         }
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       })
       .then((responseJson) => {
         this.setState({
@@ -126,7 +122,7 @@ class FriendScreen extends Component {
         } else if (response.status === 403) {
           throw new Error('Can only view the post of yourself of your friends');
         }
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       })
       .catch((error) => {
         console.log(error);
@@ -159,14 +155,14 @@ class FriendScreen extends Component {
       }
     ).then((response) => {
       if (response.status === 200) {
-        return response.json();
+        this.getPost();
       }
       if (response.status === 401) {
         navigation.navigate('login');
       } else if (response.status === 403) {
         throw new Error('You have already liked this post');
       }
-      throw new Error('Something went wrong');
+      throw 'Something went wrong';
     });
   };
 
@@ -184,14 +180,14 @@ class FriendScreen extends Component {
       }
     ).then((response) => {
       if (response.status === 200) {
-        return response.json();
+        this.getPost();
       }
       if (response.status === 401) {
         navigation.navigate('login');
       } else if (response.status === 403) {
         throw new Error('You have already liked this post');
       }
-      throw new Error('Something went wrong');
+      throw 'Something went wrong';
     });
   };
 

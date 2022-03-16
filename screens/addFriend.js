@@ -59,7 +59,7 @@ class AddFriend extends Component {
         } else if (response.status === 404) {
           throw new Error('Not found');
         } else {
-          throw new Error('Something went wrong');
+          throw 'Something went wrong';
         }
       })
       .then((responseJson) => {
@@ -91,7 +91,7 @@ class AddFriend extends Component {
       } else if (response.status === 404) {
         throw new Error('Not found');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };

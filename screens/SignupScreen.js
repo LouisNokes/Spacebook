@@ -58,7 +58,7 @@ class Signup extends Component {
         } else if (response.status === 500) {
           throw new Error('Server error');
         } else {
-          throw new Error('Something went wrong');
+          throw 'Something went wrong';
         }
       } catch (error) {
         console.log(error);

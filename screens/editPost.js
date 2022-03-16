@@ -55,7 +55,7 @@ class EditPost extends Component {
         } else if (response.status === 403) {
           throw new Error('Can only view the post of yourself of your friends');
         }
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       })
       .then((responseJson) => {
         this.setState({
@@ -96,7 +96,7 @@ class EditPost extends Component {
       } else if (response.status === 401) {
         throw new Error('Unauthorised');
       } else {
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       }
     });
   };
