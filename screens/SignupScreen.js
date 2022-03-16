@@ -50,17 +50,16 @@ class Signup extends Component {
           body: JSON.stringify(userData),
         });
         if (response.status === 201) {
+          navigation.navigate('login');
           ToastAndroid.show('Account created successfully', ToastAndroid.SHORT);
-        } else if (response.status === 400) {
-          throw 'Failed validation';
-        } else if (response.status === 500) {
-          throw 'Server error';
-        } else {
-          throw 'Something went wrong';
         }
-        const responseJson = undefined;
-        console.log('User created with ID: ', responseJson);
-        navigation.navigate('login');
+        if (response.status === 400) {
+          throw new Error('Failed validation');
+        } else if (response.status === 500) {
+          throw new Error('Server error');
+        } else {
+          throw new Error('Something went wrong');
+        }
       } catch (error) {
         console.log(error);
       }

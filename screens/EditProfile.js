@@ -27,7 +27,7 @@ class EditProfile extends Component {
     let res = await fetch(data.base64);
     let blob = await res.blob();
 
-    return fetch('http://localhost:3333/api/1.0.0/user/' + id + '/photo', {
+    return fetch(`http://localhost:3333/api/1.0.0/user/${uID}/photo`, {
       method: 'POST',
       headers: {
         'Content-Type': 'image/png',

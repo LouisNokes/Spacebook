@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
   FlatList,
+  Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,9 +20,14 @@ class FriendRequest extends Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+    const { navigation } = this.props;
+    this.unsubscribe = navigation.addListener('focus', () => {
       this.getRequest();
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   // Button/Text box to add a post
@@ -35,15 +41,12 @@ class FriendRequest extends Component {
       },
     })
       .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        if (response.status === 400) {
-          console.log('Bad Request');
+        if (response.status === 201) {
+          this.getPost();
         } else if (response.status === 401) {
           navigation.navigate('login');
         } else {
-          throw 'Something went wrong';
+          throw new Error('Something went wrong');
         }
       })
       .then((responseJson) => {
@@ -66,14 +69,13 @@ class FriendRequest extends Component {
       },
     }).then((response) => {
       if (response.status === 200) {
-        return response.json();
-      }
-      if (response.status === 400) {
-        console.log('Bad Request');
+        this.getPost();
       } else if (response.status === 401) {
         navigation.navigate('login');
+      } else if (response.status === 404) {
+        throw new Error('Not found');
       } else {
-        throw 'Something went wrong';
+        throw new Error('Something went wrong');
       }
     });
   };
@@ -88,14 +90,13 @@ class FriendRequest extends Component {
       },
     }).then((response) => {
       if (response.status === 200) {
-        return response.json();
-      }
-      if (response.status === 400) {
-        console.log('Bad Request');
+        this.getPost();
       } else if (response.status === 401) {
         navigation.navigate('login');
+      } else if (response.status === 404) {
+        throw new Error('Not found');
       } else {
-        throw 'Something went wrong';
+        throw new Error('Something went wrong');
       }
     });
   };
@@ -108,6 +109,10 @@ class FriendRequest extends Component {
           data={listData}
           renderItem={({ item }) => (
             <View style={{ flexDirection: 'row' }}>
+              <Image
+                style={styles.profileImg}
+                source={require('../assets/nopic.png')}
+              />
               <Text>
                 {item.first_name} {item.last_name}
                 <Button

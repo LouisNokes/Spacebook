@@ -22,8 +22,8 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      email: 'Bobross@gmail.com',
-      password: 'password123',
+      email: 'Bob1@gmail.com',
+      password: 'pass123',
     };
   }
 
@@ -47,7 +47,7 @@ class Login extends Component {
         loginData(responseJson);
         await AsyncStorage.setItem('@session_token', responseJson.token);
         await AsyncStorage.setItem('@user_id', responseJson.id.toString());
-        navigation.navigate('home');
+        navigation.navigate('profile');
       })
 
       .catch((error) => {

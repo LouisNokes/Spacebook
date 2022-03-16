@@ -5,8 +5,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Pressable,
-  Modal,
+  TouchableOpacity,
   TextInput,
   ToastAndroid,
 } from 'react-native';
@@ -21,13 +20,9 @@ class SettingScreen extends Component {
       token: '',
       password: '',
       email: '',
-      modalVisible: false,
+      listData: [],
     };
   }
-
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
-  };
 
   logout = async () => {
     const { navigation } = this.props;
@@ -54,55 +49,102 @@ class SettingScreen extends Component {
       });
   };
 
+  getUser = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    const userID = await AsyncStorage.getItem('@user_id');
+    return fetch(`http://localhost:3333/api/1.0.0/user/${userID}`, {
+      method: 'GET',
+      headers: {
+        'X-Authorization': token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        if (response.status === 401) {
+          navigation.navigate('Login');
+        } else if (response.status === 500) {
+          throw new Error('Server Error');
+        } else if (response.status === 404) {
+          throw new Error('Not Found');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((responseJson) => {
+        this.setState({
+          isLoading: false,
+          listData: responseJson,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  updateUser = async () => {
+    const { navigation } = this.props;
+    const { email, password } = this.state;
+    const token = await AsyncStorage.getItem('@session_token');
+    const userId = await AsyncStorage.getItem('@user_id');
+    return fetch(`http://localhost:3333/api/1.0.0/user/${userId}`, {
+      method: 'PATCH',
+      headers: {
+        'X-Authorization': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        navigation.navigate('Login');
+      }
+      if (response.status === 400) {
+        throw new Error('Bad Request');
+      } else if (response.status === 401) {
+        throw new Error('Unauthorised');
+      } else {
+        throw new Error('Something went wrong');
+      }
+    });
+  };
+
   render() {
-    const { modalVisible } = this.state;
+    const { email, password } = this.state;
     return (
       <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          visible={modalVisible}
-          onRequestClose={() => {
-            this.setModalVisible(!modalVisible);
+        <TextInput
+          placeholder="New email"
+          onChangeText={(email) => this.setState({ email })}
+          value={email}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="New password"
+          onChangeText={(password) => this.setState({ password })}
+          value={password}
+          style={styles.input}
+        />
+        <TouchableOpacity
+          style={styles.settingPageBtn}
+          onPress={() => {
+            this.updateUser();
           }}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TextInput style={styles.input} placeholder="Current email" />
-              <TextInput style={styles.input} placeholder="New email" />
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => this.updateUser()}
-              >
-                <Text style={styles.textStyle}>Save</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => this.setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-
-        <Pressable
-          style={[styles.button, styles.buttonOpen, styles.position]}
-          onPress={() => this.setModalVisible(true)}
+          <Text style={{ color: 'white' }}>Update</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.settingPageBtn}
+          onPress={() => {
+            this.logout();
+          }}
         >
-          <Text style={styles.textStyle}>Change email</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.button, styles.buttonOpen, styles.position]}
-          onPress={() => this.setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Change password</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.button, styles.buttonOpen, styles.position]}
-          onPress={() => this.logout()}
-        >
-          <Text style={styles.textStyle}>Sign Out</Text>
-        </Pressable>
+          <Text style={{ color: 'red' }}>Sign out</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -133,19 +175,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
+  settingPageBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8b9dc3',
     padding: 10,
-    elevation: 2,
     margin: 5,
-    width: 170,
+    borderRadius: 10,
+    borderWidth: 2,
   },
-  buttonOpen: {
-    backgroundColor: '#8b9dc3',
-  },
-  buttonClose: {
-    backgroundColor: '#8b9dc3',
-  },
+
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
@@ -157,9 +196,10 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
+    margin: 5,
     borderWidth: 1,
     padding: 10,
+    backgroundColor: '#FFFFFF',
   },
 });
 

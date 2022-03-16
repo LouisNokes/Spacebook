@@ -6,13 +6,14 @@ import { Text, View, Image, StyleSheet } from 'react-native';
 
 import login from './screens/loginScreen';
 import signup from './screens/signupScreen';
-import homescreen from './screens/homeScreen';
 import profileScreen from './screens/profileScreen';
 import settingscreen from './screens/settingScreen';
 import FriendsList from './screens/friendsList';
 import EditProfile from './screens/editProfile';
 import addFriend from './screens/addFriend';
 import FriendRequest from './screens/friendRequestScreen';
+import friendScreen from './screens/friendScreen';
+import viewPost from './screens/viewSinglePost';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,37 +25,6 @@ function Home() {
         showLabel: false,
       }}
     >
-      <Tab.Screen
-        name="Home"
-        component={homescreen}
-        options={{
-          headerShown: true,
-
-          headerTitle: () => (
-            <Image
-              style={{
-                width: 200,
-                height: 60,
-              }}
-              source={require('./assets/logo.png')}
-            />
-          ),
-          tabBarIcon: ({ focused }) => (
-            <View>
-              <Image
-                source={require('./assets/home.png')}
-                resizeMode="contain"
-                style={styles.image}
-              />
-              <Text
-                style={{ color: focused ? '#660094' : '#748c94', fontSize: 10 }}
-              >
-                Home
-              </Text>
-            </View>
-          ),
-        }}
-      />
       <Tab.Screen
         name="Profile"
         component={profileScreen}
@@ -139,7 +109,7 @@ function MyStack() {
           options={{ title: 'Sign up', headerTitleAlign: 'center' }}
         />
         <Stack.Screen
-          name="home"
+          name="profile"
           component={Home}
           options={{ headerShown: false }}
         />
@@ -157,6 +127,17 @@ function MyStack() {
           name="request"
           component={FriendRequest}
           options={{ title: 'Friend Request', headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="friendScreen"
+          component={friendScreen}
+          options={{ headerShown: true }}
+        />
+
+        <Stack.Screen
+          name="viewPost"
+          component={viewPost}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -8,7 +8,6 @@ import {
   FlatList,
   View,
   Image,
-  Alert,
 } from 'react-native-web';
 
 class AddFriend extends Component {
@@ -32,7 +31,16 @@ class AddFriend extends Component {
     this.unsubscribe();
   }
 
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    if (token == null) {
+      navigation.navigate('login');
+    }
+  };
+
   getData = async () => {
+    // Validation (Cant search for yourself or friends you've already added)
     const { userInput } = this.state;
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
@@ -46,12 +54,12 @@ class AddFriend extends Component {
         if (response.status === 200) {
           return response.json();
         }
-        if (response.status === 400) {
-          console.log('Bad Request');
-        } else if (response.status === 401) {
+        if (response.status === 401) {
           navigation.navigate('login');
+        } else if (response.status === 404) {
+          throw new Error('Not found');
         } else {
-          throw 'Something went wrong';
+          throw new Error('Something went wrong');
         }
       })
       .then((responseJson) => {
@@ -64,11 +72,11 @@ class AddFriend extends Component {
       });
   };
 
-  addRequest = async (user_id) => {
+  addRequest = async (userId) => {
     const token = await AsyncStorage.getItem('@session_token');
     const { navigation } = this.props;
-    fetch(`http://localhost:3333/api/1.0.0/user/${user_id}/friends`, {
-      method: 'post',
+    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/friends`, {
+      method: 'POST',
       headers: {
         'X-Authorization': token,
       },
@@ -78,20 +86,14 @@ class AddFriend extends Component {
       }
       if (response.status === 401) {
         navigation.navigate('login');
+      } else if (response.status === 403) {
+        throw new Error('User is already added as a friend');
+      } else if (response.status === 404) {
+        throw new Error('Not found');
+      } else {
+        throw new Error('Something went wrong');
       }
-      if (response.status === 404) {
-        Alert.alert('m');
-      }
-      return response.blob();
     });
-  };
-
-  checkLoggedIn = async () => {
-    const { navigation } = this.props;
-    const value = await AsyncStorage.getItem('@session_token');
-    if (value == null) {
-      navigation.navigate('login');
-    }
   };
 
   render() {
@@ -105,6 +107,7 @@ class AddFriend extends Component {
             value={userInput}
           />
           <Button title="Search:" onPress={() => this.getData()} />
+
           <FlatList
             data={listData}
             renderItem={({ item }) => (

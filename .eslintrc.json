@@ -21,10 +21,7 @@
       { "functions": true, "classes": true, "variables": false }
     ],
     "react/no-unstable-nested-components": ["off", { "allowAsProps": true }],
-    "global-require": 0,
     "no-console": "off",
-    "react/prop-types": ["error", { "ignore": ["navigation"] }],
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["off"]
+    "react/prop-types": ["error", { "ignore": ["navigation"] }]
   }
 }

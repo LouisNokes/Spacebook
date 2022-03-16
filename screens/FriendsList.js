@@ -4,6 +4,9 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  FlatList,
+  View,
+  Button,
   TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,14 +16,42 @@ class FriendsList extends Component {
     super(props);
 
     this.state = {
-      userInput: '',
       listData: [],
+      userInput: '',
     };
   }
 
-  getData = async (userId) => {
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.unsubscribe = navigation.addListener('focus', () => {
+      this.getFriends();
+      this.checkLoggedIn();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const value = await AsyncStorage.getItem('@session_token');
+    if (value == null) {
+      navigation.navigate('login');
+    }
+  };
+
+  viewFriend = (friendId) => {
+    const { navigation } = this.props;
+    navigation.navigate('friendScreen', {
+      friendId: friendId,
+    });
+  };
+
+  getFriends = async () => {
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
+    const userId = await AsyncStorage.getItem('@user_id');
     return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/friends`, {
       method: 'GET',
       headers: {
@@ -36,7 +67,7 @@ class FriendsList extends Component {
         } else if (response.status === 401) {
           navigation.navigate('login');
         } else {
-          throw 'Something went wrong';
+          throw new Error('Something went wrong');
         }
       })
       .then((responseJson) => {
@@ -51,7 +82,7 @@ class FriendsList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { userInput } = this.state;
+    const { listData } = this.state;
     return (
       <ScrollView style={styles.view}>
         <TouchableOpacity
@@ -70,10 +101,23 @@ class FriendsList extends Component {
         >
           <Text style={{ color: 'white' }}>Friend Request</Text>
         </TouchableOpacity>
-        <TextInput
-          placeholder="Search friends list"
-          onChangeText={(userInput) => this.setState({ userInput })}
-          value={userInput}
+        <Text> My Friends </Text>
+        <FlatList
+          data={listData}
+          renderItem={({ item }) => (
+            <View style={{ flexDirection: 'row' }}>
+              <Text>
+                {item.user_givenname} {item.user_familyname}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  this.viewFriend(item.user_id);
+                }}
+              >
+                <Text style={{ color: 'white' }}>View</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         />
       </ScrollView>
     );
