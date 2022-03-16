@@ -17,6 +17,8 @@ class FriendsList extends Component {
     this.state = {
       listData: [],
       userInput: '',
+      limit: 5,
+      offset: 0,
     };
   }
 
@@ -81,14 +83,17 @@ class FriendsList extends Component {
 
   searchFriends = async () => {
     const { navigation } = this.props;
+    const { userInput } = this.state;
     const token = await AsyncStorage.getItem('@session_token');
-    const userId = await AsyncStorage.getItem('@user_id');
-    return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/friends`, {
-      method: 'GET',
-      headers: {
-        'X-Authorization': token,
-      },
-    })
+    return fetch(
+      `http://localhost:3333/api/1.0.0/search?q=${userInput}&search_in=friends&limit=${this.state.limit}&offset=${this.state.offset}`,
+      {
+        method: 'GET',
+        headers: {
+          'X-Authorization': token,
+        },
+      }
+    )
       .then((response) => {
         if (response.status === 200) {
           return response.json();
@@ -113,7 +118,7 @@ class FriendsList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { listData } = this.state;
+    const { listData, userInput } = this.state;
     return (
       <ScrollView style={styles.view}>
         <TouchableOpacity
@@ -134,8 +139,8 @@ class FriendsList extends Component {
         </TouchableOpacity>
         <TextInput
           placeholder="Search for friends"
-          onChangeText={(password) => this.setState({ password })}
-          value={password}
+          onChangeText={(userInput) => this.setState({ userInput })}
+          value={userInput}
           style={styles.input}
         />
         <TouchableOpacity

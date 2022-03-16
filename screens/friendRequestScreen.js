@@ -41,9 +41,10 @@ class FriendRequest extends Component {
       },
     })
       .then((response) => {
-        if (response.status === 201) {
-          this.getPost();
-        } else if (response.status === 401) {
+        if (response.status === 200) {
+          return response.json();
+        }
+        if (response.status === 401) {
           navigation.navigate('login');
         } else {
           throw new Error('Something went wrong');
@@ -69,8 +70,9 @@ class FriendRequest extends Component {
       },
     }).then((response) => {
       if (response.status === 200) {
-        this.getPost();
-      } else if (response.status === 401) {
+        return response.json();
+      }
+      if (response.status === 401) {
         navigation.navigate('login');
       } else if (response.status === 404) {
         throw new Error('Not found');
@@ -90,8 +92,9 @@ class FriendRequest extends Component {
       },
     }).then((response) => {
       if (response.status === 200) {
-        this.getPost();
-      } else if (response.status === 401) {
+        return response.json();
+      }
+      if (response.status === 401) {
         navigation.navigate('login');
       } else if (response.status === 404) {
         throw new Error('Not found');
