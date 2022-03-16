@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   View,
-  Button,
   TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -80,6 +79,38 @@ class FriendsList extends Component {
       });
   };
 
+  searchFriends = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    const userId = await AsyncStorage.getItem('@user_id');
+    return fetch(`http://localhost:3333/api/1.0.0/user/${userId}/friends`, {
+      method: 'GET',
+      headers: {
+        'X-Authorization': token,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+        if (response.status === 400) {
+          console.log('Bad Request');
+        } else if (response.status === 401) {
+          navigation.navigate('login');
+        } else {
+          throw new Error('Something went wrong');
+        }
+      })
+      .then((responseJson) => {
+        this.setState({
+          listData: responseJson,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   render() {
     const { navigation } = this.props;
     const { listData } = this.state;
@@ -100,6 +131,19 @@ class FriendsList extends Component {
           }}
         >
           <Text style={{ color: 'white' }}>Friend Request</Text>
+        </TouchableOpacity>
+        <TextInput
+          placeholder="Search for friends"
+          onChangeText={(password) => this.setState({ password })}
+          value={password}
+          style={styles.input}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            this.searchFriends();
+          }}
+        >
+          <Text style={{ color: 'white' }}>Search</Text>
         </TouchableOpacity>
         <Text> My Friends </Text>
         <FlatList

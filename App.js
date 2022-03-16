@@ -14,6 +14,7 @@ import addFriend from './screens/addFriend';
 import FriendRequest from './screens/friendRequestScreen';
 import friendScreen from './screens/friendScreen';
 import viewPost from './screens/viewSinglePost';
+import editPost from './screens/editPost';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,6 +138,12 @@ function MyStack() {
         <Stack.Screen
           name="viewPost"
           component={viewPost}
+          options={{ headerShown: true }}
+        />
+
+        <Stack.Screen
+          name="editPost"
+          component={editPost}
           options={{ headerShown: true }}
         />
       </Stack.Navigator>

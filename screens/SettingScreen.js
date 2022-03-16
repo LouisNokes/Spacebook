@@ -49,41 +49,6 @@ class SettingScreen extends Component {
       });
   };
 
-  getUser = async () => {
-    const { navigation } = this.props;
-    const token = await AsyncStorage.getItem('@session_token');
-    const userID = await AsyncStorage.getItem('@user_id');
-    return fetch(`http://localhost:3333/api/1.0.0/user/${userID}`, {
-      method: 'GET',
-      headers: {
-        'X-Authorization': token,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        }
-        if (response.status === 401) {
-          navigation.navigate('Login');
-        } else if (response.status === 500) {
-          throw new Error('Server Error');
-        } else if (response.status === 404) {
-          throw new Error('Not Found');
-        } else {
-          throw new Error('Something went wrong');
-        }
-      })
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          listData: responseJson,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   updateUser = async () => {
     const { navigation } = this.props;
     const { email, password } = this.state;

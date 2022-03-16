@@ -49,6 +49,13 @@ class ProfileScreen extends Component {
     });
   };
 
+  editPost = (postId) => {
+    const { navigation } = this.props;
+    navigation.navigate('editPost', {
+      postID: postId,
+    });
+  };
+
   checkLoggedIn = async () => {
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
@@ -211,7 +218,7 @@ class ProfileScreen extends Component {
           <TouchableOpacity
             style={styles.editbtn}
             onPress={() => {
-              navigation.navigate('edit'); // Nav to edit page
+              navigation.navigate('editProfile'); // Nav to edit page
             }}
           >
             <Text style={{ color: 'white' }}>Upload Picture</Text>
@@ -249,7 +256,12 @@ class ProfileScreen extends Component {
                 </Text>
                 <Text style={styles.contentSection}> {item.text} </Text>
                 <View style={styles.rightButtons}>
-                  <Button icon={<Icon name="edit" size={15} color="white" />} />
+                  <Button
+                    icon={<Icon name="edit" size={15} color="white" />}
+                    onPress={() => {
+                      this.editPost(item.post_id);
+                    }}
+                  />
                   <Button
                     icon={<Icon name="eye" size={15} color="white" />}
                     onPress={() => {
