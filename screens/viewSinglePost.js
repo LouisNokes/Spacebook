@@ -15,6 +15,7 @@ class ViewPost extends Component {
       listData: '',
       firstName: '',
       lastName: '',
+      numLikes: '',
       postId: this.props.route.params.postID,
       friendId: this.props.route.params.friendId,
       friendPostId: this.props.route.params.friendPostId,
@@ -90,6 +91,7 @@ class ViewPost extends Component {
           text: responseJson.text,
           firstName: responseJson.author.first_name,
           lastName: responseJson.author.last_name,
+          numLikes: responseJson.numLikes,
         });
       })
       .catch((error) => {
@@ -127,6 +129,7 @@ class ViewPost extends Component {
           text: responseJson.text,
           firstName: responseJson.author.first_name,
           lastName: responseJson.author.last_name,
+          numLikes: responseJson.numLikes,
         });
       })
       .catch((error) => {
@@ -157,7 +160,7 @@ class ViewPost extends Component {
   };
 
   render() {
-    const { photo, firstName, lastName, text } = this.state;
+    const { photo, firstName, lastName, text, numLikes } = this.state;
     const { navigation } = this.props;
     return (
       <View style={styles.centeredView}>
@@ -176,6 +179,7 @@ class ViewPost extends Component {
               {firstName} {lastName}
             </Text>
             <Text style={styles.contentSection}> {text} </Text>
+            <Text> Likes: {numLikes} </Text>
           </View>
         </ScrollView>
       </View>
@@ -189,13 +193,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#3b5998',
-  },
-  txt: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    color: 'black',
-    margin: 2,
   },
   backgrd: {
     backgroundColor: '#3b5998',

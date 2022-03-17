@@ -164,11 +164,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#FFFFFF',
   },
-  txt: {
-    fontWeight: 'bold',
-    color: 'black',
-    margin: 2,
-  },
   txtName: {
     fontWeight: 'bold',
     color: 'black',

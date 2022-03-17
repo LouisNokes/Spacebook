@@ -303,13 +303,6 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginTop: 20,
   },
-  txt: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    color: 'black',
-    margin: 2,
-  },
   txtName: {
     alignSelf: 'center',
     fontWeight: 'bold',
@@ -359,6 +352,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 15,
+    fontSize: 15,
   },
   input: {
     height: 40,

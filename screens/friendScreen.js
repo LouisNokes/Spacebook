@@ -228,7 +228,6 @@ class FriendScreen extends Component {
           <Text style={styles.txtName}>
             {firstName} {lastName}
           </Text>
-          <Text style={styles.txt}>Friends: {friendCount}</Text>
           <FlatList
             data={listData}
             renderItem={({ item }) => (
@@ -295,12 +294,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 75,
     marginTop: 20,
-  },
-  txt: {
-    alignSelf: 'center',
-    fontWeight: 'bold',
-    color: 'black',
-    margin: 2,
   },
   txtName: {
     alignSelf: 'center',
