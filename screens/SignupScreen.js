@@ -6,7 +6,6 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  ToastAndroid,
 } from 'react-native';
 
 class Signup extends Component {
@@ -31,38 +30,35 @@ class Signup extends Component {
       password,
     };
 
+    // Check email is valid
+
     if (
       first_name === '' ||
       last_name === '' ||
       email === '' ||
       password === ''
     ) {
-      ToastAndroid.show('Please fill in all fields', ToastAndroid.SHORT);
+      alert('Please fill in all fields');
     } else if (password.length < 5) {
-      ToastAndroid.show('Password is too short', ToastAndroid.SHORT);
+      alert('Password must be more than 5 characters');
     } else {
-      try {
-        const response = await fetch('http://localhost:3333/api/1.0.0/user', {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        });
+      return fetch('http://localhost:3333/api/1.0.0/user', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      }).then((response) => {
         if (response.status === 201) {
           navigation.navigate('login');
-          ToastAndroid.show('Account created successfully', ToastAndroid.SHORT);
+          alert('Account created successfully');
         }
         if (response.status === 400) {
           throw new Error('Failed validation');
-        } else if (response.status === 500) {
-          throw new Error('Server error');
         } else {
           throw 'Something went wrong';
         }
-      } catch (error) {
-        console.log(error);
-      }
+      });
     }
   };
 

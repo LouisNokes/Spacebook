@@ -88,10 +88,9 @@ class ViewPost extends Component {
   };
 
   getFriendPost = async () => {
-    const { friendPostId } = this.state;
+    const { friendPostId, friendsId } = this.state;
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
-    const { friendsId } = this.state;
     return fetch(
       `http://localhost:3333/api/1.0.0/user/${friendsId}/post/${friendPostId}`,
       {

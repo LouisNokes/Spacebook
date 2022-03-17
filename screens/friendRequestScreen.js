@@ -112,17 +112,21 @@ class FriendRequest extends Component {
           data={listData}
           renderItem={({ item }) => (
             <View>
-              <Text>
-                {item.first_name} {item.last_name}
-                <Button
-                  title="Accept"
-                  onPress={() => this.acceptRequest(item.user_id)}
-                />
-                <Button
-                  title="Decline"
-                  onPress={() => this.declineRequest(item.user_id)}
-                />
-              </Text>
+              <View style={styles.postContainer}>
+                <Text>
+                  {item.first_name} {item.last_name}
+                  <Button
+                    style={styles.addButton}
+                    title="Accept"
+                    onPress={() => this.acceptRequest(item.user_id)}
+                  />
+                  <Button
+                    style={styles.addButton}
+                    title="Decline"
+                    onPress={() => this.declineRequest(item.user_id)}
+                  />
+                </Text>
+              </View>
             </View>
           )}
         />
@@ -147,6 +151,24 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     marginTop: 5,
+  },
+  addButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8b9dc3',
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+  },
+  postContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 30,
+    borderWidth: 2,
   },
 });
 

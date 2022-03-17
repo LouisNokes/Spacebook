@@ -20,7 +20,6 @@ class ProfileScreen extends Component {
     this.state = {
       firstName: '',
       lastName: '',
-      friendCount: '',
       photo: null,
       isLoading: true,
       listData: [],
@@ -132,7 +131,7 @@ class ProfileScreen extends Component {
         } else if (response.status === 403) {
           throw new Error('Can only view the post of yourself of your friends');
         }
-        throw new Error('Something went wrong');
+        throw 'Something went wrong';
       })
       .then((responseJson) => {
         this.setState({
@@ -145,6 +144,7 @@ class ProfileScreen extends Component {
   };
 
   deletePost = async (postId) => {
+    this.createTwoButtonAlert();
     const token = await AsyncStorage.getItem('@session_token');
     const userId = await AsyncStorage.getItem('@user_id');
     const { navigation } = this.props;
@@ -194,7 +194,6 @@ class ProfileScreen extends Component {
         this.setState({
           firstName: responseJson.first_name,
           lastName: responseJson.last_name,
-          friendCount: responseJson.friend_count,
         });
       })
       .catch((error) => {
@@ -203,8 +202,7 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, friendCount, listData, userInput, photo } =
-      this.state;
+    const { firstName, lastName, listData, userInput, photo } = this.state;
     const { navigation } = this.props;
     return (
       <View style={styles.centeredView}>
@@ -231,7 +229,6 @@ class ProfileScreen extends Component {
           >
             <Text style={{ color: 'white' }}>Drafts</Text>
           </TouchableOpacity>
-          <Text style={styles.txt}>Friends: {friendCount}</Text>
           <TextInput
             placeholder="Whats on your mind..."
             onChangeText={(userInput) => this.setState({ userInput })}

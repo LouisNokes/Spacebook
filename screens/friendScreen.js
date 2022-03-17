@@ -34,10 +34,11 @@ class FriendScreen extends Component {
     });
   }
 
-  viewPost = (friendPostId) => {
+  viewPost = (friendId, friendPostId) => {
     const { navigation } = this.props;
     navigation.navigate('viewPost', {
       friendPostId: friendPostId,
+      friendId: friendId,
     });
   };
 
@@ -242,7 +243,7 @@ class FriendScreen extends Component {
                   <Button
                     icon={<Icon name="eye" size={15} color="white" />}
                     onPress={() => {
-                      this.viewPost(item.post_id);
+                      this.viewPost(item.user_id, item.post_id);
                     }}
                   />
                 </View>

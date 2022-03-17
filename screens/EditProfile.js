@@ -63,9 +63,7 @@ class EditProfile extends Component {
         <View style={styles.container}>
           <Camera
             style={styles.camera}
-            // eslint-disable-next-line react/destructuring-assignment
             type={this.state.type}
-            // eslint-disable-next-line no-return-assign
             ref={(ref) => (this.camera = ref)}
           >
             <View style={styles.buttonContainer}>
