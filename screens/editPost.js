@@ -102,8 +102,17 @@ class EditPost extends Component {
 
   render() {
     const { photo, firstName, lastName, text, newText } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={styles.centeredView}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={{ color: 'white' }}>Go back</Text>
+        </TouchableOpacity>
         <ScrollView style={styles.backgrd}>
           <View style={styles.postContainer}>
             <Image style={styles.profileImgCont} source={photo} />
@@ -224,6 +233,13 @@ const styles = StyleSheet.create({
   contentSection: {
     marginTop: 10,
     marginBottom: 15,
+  },
+  backBtn: {
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#8b9dc3',
+    margin: 5,
+    borderWidth: 2,
   },
 });
 

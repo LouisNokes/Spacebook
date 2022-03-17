@@ -41,6 +41,8 @@ class Signup extends Component {
       alert('Please fill in all fields');
     } else if (password.length < 5) {
       alert('Password must be more than 5 characters');
+    } else if (!email.includes('@')) {
+      alert('Invalid email entered');
     } else {
       return fetch('http://localhost:3333/api/1.0.0/user', {
         method: 'post',

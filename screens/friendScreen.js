@@ -4,7 +4,14 @@
 /* eslint-disable react/no-unused-state */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, FlatList } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { ScrollView } from 'react-native-web';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
@@ -131,6 +138,7 @@ class FriendScreen extends Component {
       .then((responseJson) => {
         console.log(responseJson);
         this.setState({
+          isLoading: false,
           userId: responseJson.user_id,
           firstName: responseJson.first_name,
           lastName: responseJson.last_name,
@@ -193,9 +201,26 @@ class FriendScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, friendCount, listData, photo } = this.state;
+    const { firstName, lastName, friendCount, listData, photo, isLoading } =
+      this.state;
+    const { navigation } = this.props;
+    if (isLoading) {
+      return (
+        <View>
+          <Text> Loading... </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.centeredView}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={{ color: 'white' }}>Go back</Text>
+        </TouchableOpacity>
         <ScrollView style={styles.backgrd}>
           <Image source={photo} style={styles.profileImg} />
 
@@ -339,6 +364,13 @@ const styles = StyleSheet.create({
   contentSection: {
     marginTop: 10,
     marginBottom: 15,
+  },
+  backBtn: {
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#8b9dc3',
+    margin: 5,
+    borderWidth: 2,
   },
 });
 

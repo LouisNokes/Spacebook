@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   Text,
   View,
@@ -142,6 +142,7 @@ class ProfileScreen extends Component {
       })
       .then((responseJson) => {
         this.setState({
+          isLoading: false,
           listData: responseJson,
         });
       })
@@ -208,8 +209,16 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const { firstName, lastName, listData, userInput, photo } = this.state;
+    const { firstName, lastName, listData, userInput, photo, isLoading } =
+      this.state;
     const { navigation } = this.props;
+    if (isLoading) {
+      return (
+        <View>
+          <Text> Loading... </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.centeredView}>
         <ScrollView style={styles.backgrd}>
@@ -295,6 +304,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   txt: {
+    justifyContent: 'center',
     alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
@@ -364,6 +374,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   contentSection: {
+    textAlign: 'center',
     marginTop: 10,
     marginBottom: 15,
   },

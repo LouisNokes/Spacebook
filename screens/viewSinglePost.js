@@ -4,7 +4,7 @@
 /* eslint-disable react/no-unused-state */
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-web';
 
 class ViewPost extends Component {
@@ -149,8 +149,17 @@ class ViewPost extends Component {
 
   render() {
     const { photo, firstName, lastName, text } = this.state;
+    const { navigation } = this.props;
     return (
       <View style={styles.centeredView}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={{ color: 'white' }}>Go back</Text>
+        </TouchableOpacity>
         <ScrollView style={styles.backgrd}>
           <View style={styles.postContainer}>
             <Image style={styles.profileImgCont} source={photo} />
@@ -252,6 +261,13 @@ const styles = StyleSheet.create({
   contentSection: {
     marginTop: 10,
     marginBottom: 15,
+  },
+  backBtn: {
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#8b9dc3',
+    margin: 5,
+    borderWidth: 2,
   },
 });
 

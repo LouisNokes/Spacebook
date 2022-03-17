@@ -132,19 +132,19 @@ function MyStack() {
         <Stack.Screen
           name="friendScreen"
           component={friendScreen}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
           name="viewPost"
           component={viewPost}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen
           name="editPost"
           component={editPost}
-          options={{ headerShown: true }}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

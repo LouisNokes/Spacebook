@@ -18,8 +18,6 @@ class FriendsList extends Component {
     this.state = {
       listData: [],
       userInput: '',
-      limit: 5,
-      offset: 0,
       photo: null,
     };
   }
@@ -76,6 +74,7 @@ class FriendsList extends Component {
       .then((responseJson) => {
         this.setState({
           listData: responseJson,
+          isLoading: false,
         });
       })
       .catch((error) => {
@@ -88,7 +87,7 @@ class FriendsList extends Component {
     const { userInput } = this.state;
     const token = await AsyncStorage.getItem('@session_token');
     return fetch(
-      `http://localhost:3333/api/1.0.0/search?q=${userInput}&search_in=friends&limit=${this.state.limit}&offset=${this.state.offset}`,
+      `http://localhost:3333/api/1.0.0/search?q=${userInput}&search_in=friends`,
       {
         method: 'GET',
         headers: {
@@ -111,6 +110,7 @@ class FriendsList extends Component {
       .then((responseJson) => {
         this.setState({
           listData: responseJson,
+          isLoading: false,
         });
       })
       .catch((error) => {
@@ -120,7 +120,14 @@ class FriendsList extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { listData, userInput } = this.state;
+    const { listData, userInput, isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <View>
+          <Text> Loading... </Text>
+        </View>
+      );
+    }
     return (
       <ScrollView style={styles.view}>
         <TouchableOpacity
