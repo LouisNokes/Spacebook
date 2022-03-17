@@ -327,9 +327,6 @@ const styles = StyleSheet.create({
   backgrd: {
     backgroundColor: '#3b5998',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-  },
   postContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -353,25 +350,10 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginTop: 4,
   },
-  position: {
-    bottom: 200,
-  },
   nameTxt: {
     fontWeight: 'bold',
     textAlign: 'center',
     textDecorationLine: 'underline',
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 5,
-    width: 170,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
   contentSection: {
     textAlign: 'center',

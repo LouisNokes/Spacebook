@@ -38,6 +38,7 @@ class FriendScreen extends Component {
       this.getPost();
       this.getFriendData();
       this.get_profile_image();
+      this.checkLoggedIn();
     });
   }
 
@@ -307,14 +308,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
   },
-  editbtn: {
-    alignItems: 'center',
-    backgroundColor: '#8b9dc3',
-    borderRadius: 10,
-    padding: 10,
-    margin: 5,
-    borderWidth: 2,
-  },
   backgrd: {
     backgroundColor: '#3b5998',
   },
@@ -341,29 +334,15 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     marginTop: 4,
   },
-  position: {
-    bottom: 200,
-  },
   nameTxt: {
     fontWeight: 'bold',
     textAlign: 'center',
     textDecorationLine: 'underline',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 5,
-    width: 170,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   contentSection: {
     marginTop: 10,
     marginBottom: 15,
+    textAlign: 'center',
   },
   backBtn: {
     alignItems: 'center',

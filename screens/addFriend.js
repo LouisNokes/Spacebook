@@ -111,14 +111,15 @@ class AddFriend extends Component {
         <FlatList
           data={listData}
           renderItem={({ item }) => (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.postContainer}>
               <Text>
                 {item.user_givenname} {item.user_familyname}
-                <Button
-                  title="Add"
-                  onPress={() => this.addRequest(item.user_id)}
-                />
               </Text>
+              <Button
+                style={styles.addButton}
+                title="Add"
+                onPress={() => this.addRequest(item.user_id)}
+              />
             </View>
           )}
         />
@@ -136,6 +137,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: '#FFFFFF',
+  },
+  postContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginTop: 30,
+    borderWidth: 2,
+  },
+  viewButton: {
+    backgroundColor: '#8b9dc3',
+    padding: 10,
+    margin: 5,
+    borderRadius: 15,
   },
 });
 

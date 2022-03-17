@@ -23,12 +23,21 @@ class FriendRequest extends Component {
     const { navigation } = this.props;
     this.unsubscribe = navigation.addListener('focus', () => {
       this.getRequest();
+      this.checkLoggedIn();
     });
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    if (token == null) {
+      navigation.navigate('login');
+    }
+  };
 
   // Button/Text box to add a post
   getRequest = async () => {
@@ -115,6 +124,8 @@ class FriendRequest extends Component {
               <View style={styles.postContainer}>
                 <Text>
                   {item.first_name} {item.last_name}
+                </Text>
+                <View style={styles.rightButtons}>
                   <Button
                     style={styles.addButton}
                     title="Accept"
@@ -125,7 +136,7 @@ class FriendRequest extends Component {
                     title="Decline"
                     onPress={() => this.declineRequest(item.user_id)}
                   />
-                </Text>
+                </View>
               </View>
             </View>
           )}
@@ -137,7 +148,6 @@ class FriendRequest extends Component {
 
 const styles = StyleSheet.create({
   backgrd: {
-    flexDirection: 'row',
     backgroundColor: '#3b5998',
   },
   container: {
@@ -153,22 +163,22 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   addButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#8b9dc3',
     padding: 10,
     margin: 5,
-    borderRadius: 10,
+    borderRadius: 15,
   },
   postContainer: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
     marginTop: 30,
     borderWidth: 2,
+  },
+  rightButtons: {
+    marginLeft: 300,
   },
 });
 

@@ -26,7 +26,16 @@ class ViewPost extends Component {
     this.getPost();
     this.getFriendPost();
     this.get_friend_image();
+    this.checkLoggedIn();
   }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    if (token == null) {
+      navigation.navigate('login');
+    }
+  };
 
   get_profile_image = async () => {
     const token = await AsyncStorage.getItem('@session_token');
@@ -175,16 +184,6 @@ class ViewPost extends Component {
 }
 
 const styles = StyleSheet.create({
-  profileImg: {
-    width: 100,
-    height: 100,
-    borderRadius: 80,
-    borderColor: 'black',
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 20,
-  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -192,28 +191,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b5998',
   },
   txt: {
+    justifyContent: 'center',
+    alignSelf: 'center',
     fontWeight: 'bold',
     color: 'black',
     margin: 2,
   },
-  txtName: {
-    fontWeight: 'bold',
-    color: 'black',
-    fontSize: 20,
-  },
-  editbtn: {
-    alignItems: 'center',
-    backgroundColor: '#8b9dc3',
-    borderRadius: 10,
-    padding: 10,
-    margin: 5,
-    borderWidth: 2,
-  },
   backgrd: {
     backgroundColor: '#3b5998',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
   },
   postContainer: {
     flex: 1,
@@ -226,39 +211,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderWidth: 2,
   },
-  rightButtons: {
-    flexDirection: 'row',
-    marginLeft: 300,
-  },
-  profileImgCont: {
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    height: 30,
-    width: 30,
-    borderRadius: 75,
-    marginTop: 4,
-  },
-  position: {
-    bottom: 200,
-  },
   nameTxt: {
     fontWeight: 'bold',
     textAlign: 'center',
     textDecorationLine: 'underline',
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 5,
-    width: 170,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   contentSection: {
+    textAlign: 'center',
     marginTop: 10,
     marginBottom: 15,
   },

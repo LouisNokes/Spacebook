@@ -26,6 +26,18 @@ class SettingScreen extends Component {
     };
   }
 
+  componentDidMount() {
+    this.checkLoggedIn();
+  }
+
+  checkLoggedIn = async () => {
+    const { navigation } = this.props;
+    const token = await AsyncStorage.getItem('@session_token');
+    if (token == null) {
+      navigation.navigate('login');
+    }
+  };
+
   logout = async () => {
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
@@ -139,24 +151,6 @@ const styles = StyleSheet.create({
     marginTop: 22,
     backgroundColor: '#3b5998',
   },
-  position: {
-    bottom: 200,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   settingPageBtn: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -165,16 +159,6 @@ const styles = StyleSheet.create({
     margin: 5,
     borderRadius: 10,
     borderWidth: 2,
-  },
-
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
   input: {
     height: 40,

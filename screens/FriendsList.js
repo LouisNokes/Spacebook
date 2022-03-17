@@ -168,15 +168,13 @@ class FriendsList extends Component {
               <Text>
                 {item.user_givenname} {item.user_familyname}
               </Text>
-              <View style={styles.rightButtons}>
-                <Button
-                  style={styles.viewButton}
-                  title="View"
-                  onPress={() => {
-                    this.viewFriend(item.user_id);
-                  }}
-                />
-              </View>
+              <Button
+                style={styles.viewButton}
+                title="View"
+                onPress={() => {
+                  this.viewFriend(item.user_id);
+                }}
+              />
             </View>
           )}
         />
@@ -201,11 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#8b9dc3',
     padding: 10,
     margin: 5,
-    borderRadius: 10,
-  },
-  rightButtons: {
-    flexDirection: 'row',
-    marginLeft: 300,
+    borderRadius: 15,
   },
   title: {
     textAlign: 'center',
@@ -231,9 +225,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   postContainer: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
