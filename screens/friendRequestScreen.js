@@ -92,7 +92,7 @@ class FriendRequest extends Component {
       },
     }).then((response) => {
       if (response.status === 200) {
-        return response.json();
+        this.getRequest();
       }
       if (response.status === 401) {
         navigation.navigate('login');

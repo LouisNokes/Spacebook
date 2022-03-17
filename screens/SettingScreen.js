@@ -21,6 +21,8 @@ class SettingScreen extends Component {
       password: '',
       email: '',
       listData: [],
+      firstName: '',
+      lastName: '',
     };
   }
 
@@ -51,7 +53,7 @@ class SettingScreen extends Component {
 
   updateUser = async () => {
     const { navigation } = this.props;
-    const { email, password } = this.state;
+    const { email, password, firstName, lastName } = this.state;
     const token = await AsyncStorage.getItem('@session_token');
     const userId = await AsyncStorage.getItem('@user_id');
     return fetch(`http://localhost:3333/api/1.0.0/user/${userId}`, {
@@ -63,6 +65,8 @@ class SettingScreen extends Component {
       body: JSON.stringify({
         email: email,
         password: password,
+        first_name: firstName,
+        last_name: lastName,
       }),
     }).then((response) => {
       if (response.status === 200) {
@@ -79,9 +83,21 @@ class SettingScreen extends Component {
   };
 
   render() {
-    const { email, password } = this.state;
+    const { email, password, firstName, lastName } = this.state;
     return (
       <View style={styles.centeredView}>
+        <TextInput
+          placeholder="First name"
+          onChangeText={(firstName) => this.setState({ firstName })}
+          value={firstName}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Last name"
+          onChangeText={(lastName) => this.setState({ lastName })}
+          value={lastName}
+          style={styles.input}
+        />
         <TextInput
           placeholder="New email"
           onChangeText={(email) => this.setState({ email })}
@@ -91,6 +107,7 @@ class SettingScreen extends Component {
         <TextInput
           placeholder="New password"
           onChangeText={(password) => this.setState({ password })}
+          secureTextEntry
           value={password}
           style={styles.input}
         />

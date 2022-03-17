@@ -88,6 +88,7 @@ class Signup extends Component {
         <TextInput
           placeholder="Password"
           onChangeText={(password) => this.setState({ password })}
+          secureTextEntry
           value={password}
           style={styles.input}
         />

@@ -16,7 +16,7 @@ class ViewPost extends Component {
       firstName: '',
       lastName: '',
       postId: this.props.route.params.postID,
-      friendsId: this.props.route.params.friendId,
+      friendId: this.props.route.params.friendId,
       friendPostId: this.props.route.params.friendPostId,
       photo: null,
     };
@@ -25,6 +25,7 @@ class ViewPost extends Component {
   componentDidMount() {
     this.getPost();
     this.getFriendPost();
+    this.get_friend_image();
   }
 
   get_profile_image = async () => {
@@ -88,11 +89,11 @@ class ViewPost extends Component {
   };
 
   getFriendPost = async () => {
-    const { friendPostId, friendsId } = this.state;
+    const { friendPostId, friendId } = this.state;
     const { navigation } = this.props;
     const token = await AsyncStorage.getItem('@session_token');
     return fetch(
-      `http://localhost:3333/api/1.0.0/user/${friendsId}/post/${friendPostId}`,
+      `http://localhost:3333/api/1.0.0/user/${friendId}/post/${friendPostId}`,
       {
         method: 'GET',
         headers: {
@@ -121,6 +122,28 @@ class ViewPost extends Component {
       })
       .catch((error) => {
         console.log(error);
+      });
+  };
+
+  get_friend_image = async () => {
+    const token = await AsyncStorage.getItem('@session_token');
+    const { friendId } = this.state;
+    fetch(`http://localhost:3333/api/1.0.0/user/${friendId}/photo`, {
+      method: 'GET',
+      headers: {
+        'X-Authorization': token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((resBlob) => {
+        let data = URL.createObjectURL(resBlob);
+        this.setState({
+          photo: data,
+          isLoading: false,
+        });
+      })
+      .catch((err) => {
+        console.log('error', err);
       });
   };
 
@@ -203,6 +226,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 30,
     width: 30,
+    borderRadius: 75,
+    marginTop: 4,
   },
   position: {
     bottom: 200,

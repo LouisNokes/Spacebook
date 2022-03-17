@@ -91,25 +91,32 @@ class ProfileScreen extends Component {
     const token = await AsyncStorage.getItem('@session_token');
     const userId = await AsyncStorage.getItem('@user_id');
     const post = { text: userInput };
-    fetch(`http://localhost:3333/api/1.0.0/user/${userId}/post`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Authorization': token,
-      },
-      body: JSON.stringify(post),
-    }).then((response) => {
-      if (response.status === 201) {
-        this.getPost();
-      }
-      if (response.status === 401) {
-        navigation.navigate('login');
-      } else if (response.status === 404) {
-        throw new Error('Not found');
-      } else {
-        throw 'Something went wrong';
-      }
-    });
+
+    if (userInput === '') {
+      alert('You cannot send a blank post');
+    } else if (userInput.length > 280) {
+      alert('There is a 280 character limit');
+    } else {
+      fetch(`http://localhost:3333/api/1.0.0/user/${userId}/post`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Authorization': token,
+        },
+        body: JSON.stringify(post),
+      }).then((response) => {
+        if (response.status === 201) {
+          this.getPost();
+        }
+        if (response.status === 401) {
+          navigation.navigate('login');
+        } else if (response.status === 404) {
+          throw new Error('Not found');
+        } else {
+          throw 'Something went wrong';
+        }
+      });
+    }
   };
 
   getPost = async () => {
@@ -144,7 +151,6 @@ class ProfileScreen extends Component {
   };
 
   deletePost = async (postId) => {
-    this.createTwoButtonAlert();
     const token = await AsyncStorage.getItem('@session_token');
     const userId = await AsyncStorage.getItem('@user_id');
     const { navigation } = this.props;
@@ -220,14 +226,6 @@ class ProfileScreen extends Component {
             }}
           >
             <Text style={{ color: 'white' }}>Upload Picture</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.editbtn}
-            onPress={() => {
-              navigation.navigate(); // Nav to draft page
-            }}
-          >
-            <Text style={{ color: 'white' }}>Drafts</Text>
           </TouchableOpacity>
           <TextInput
             placeholder="Whats on your mind..."

@@ -71,7 +71,6 @@ class EditPost extends Component {
   };
 
   updateText = async () => {
-    const { navigation } = this.props;
     const { newText, postId } = this.state;
     const token = await AsyncStorage.getItem('@session_token');
     const userId = await AsyncStorage.getItem('@user_id');
